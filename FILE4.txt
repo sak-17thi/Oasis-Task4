@@ -1,0 +1,214 @@
+LOGIN.JAVA
+
+package com.online.system;
+import java.util.Scanner;
+
+
+public class Login {
+    public static String USERNAME;
+	public static String PASSWORD;
+
+	public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter username: ");
+        String username = scanner.nextLine();
+
+        System.out.print("Enter password: ");
+        String password = scanner.nextLine();
+
+        // You can add your own login logic here
+        // For example, you can check if the username and password match a specific value
+        if (username.equals("name@123") && password.equals("abc/3")) {
+            System.out.println("Login successful!");
+
+            // Navigate to the MainSystem class
+            MainSystem.main(new String[0]);
+        } else {
+            System.out.println("Invalid credentials. Try again!");
+        }
+    }
+}
+
+MAINSYSTEM.JAVA
+
+package com.online.system;
+import java.util.InputMismatchException;
+import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+
+ public class MainSystem{
+	
+	     private static Scanner scanner = new Scanner(System.in);
+
+	     public static void main(String[] args) {
+	         question1();
+	     }
+
+	     private static void question1() {
+	         System.out.println("What is the capital of Australia?");
+	         System.out.println("1. Berlin");
+	         System.out.println("2. Canberra");
+	         System.out.println("3. Syndey");
+
+	         System.out.print("Enter your choice: ");
+	         int choice = getChoiceWithTimer(10); // 10 seconds timer
+
+	         switch (choice) {
+	             case 1:
+	                 System.out.println("Incorrect. The capital of Australia is Canberra.");
+	                 break;
+	             case 2:
+	                 System.out.println("Correct! The capital of Australia is Canberra.");
+	                 break;
+	             case 3:
+	                 System.out.println("Incorrect. The capital of Australia is Canberra.");
+	                 break;
+	             default:
+	                 System.out.println("Invalid choice. Please try again!");
+	                 question1(); // Navigate back to Question 1
+	         }
+
+	         question2(); // Navigate to Question 2
+	     }
+
+	     private static void question2() {
+	         System.out.println("50 times of 8 is equal to?");
+	         System.out.println("1. 800");
+	         System.out.println("2. 1000");
+	         System.out.println("3. 400");
+
+	         System.out.print("Enter your choice: ");
+	         int choice = getChoiceWithTimer(10); // 10 seconds timer
+
+	         switch (choice) {
+	             case 1:
+	                 System.out.println("Incorrect. 50 times of 8 is equal to 400.");
+	                 break;
+	             case 2:
+	                 System.out.println("Incorrect. 50 times of 8 is equal to 400.");
+	                 break;
+	             case 3:
+	                 System.out.println("Correct! 50 times of 8 is equal to 400.");
+	                 break;
+	             default:
+	                 System.out.println("Invalid choice. Please try again!");
+	                 question2(); // Navigate back to Question 2
+	         }
+
+	         question3(); // Navigate to Question 3
+	     }
+
+	     private static void question3() {
+	         System.out.println("What is the smallest country in the world?");
+	         System.out.println("1. Vatican City");
+	         System.out.println("2. Monaco");
+	         System.out.println("3. Nauru");
+
+	         System.out.print("Enter your choice: ");
+	         int choice = getChoiceWithTimer(10); // 10 seconds timer
+
+	         switch (choice) {
+	             case 1:
+	                 System.out.println("Correct! The smallest country in the world is Vatican City.");
+	                 break;
+	             case 2:
+	                 System.out.println("Incorrect. The smallest country in the world is Vatican City.");
+	                 break;
+	             case 3:
+	                 System.out.println("Incorrect. The smallest country in the world is Vatican City.");
+	                 break;
+	             default:
+	                 System.out.println("Invalid choice. Please try again!");
+	                 question3(); // Navigate back to Question 3
+	         }
+
+	         logout(); // Navigate to logout
+	     }
+
+	     private static int getChoiceWithTimer(int seconds) {
+	    	 final AtomicBoolean timerExpired = new AtomicBoolean(false);
+	    	 int choice=0;
+	    	 try {
+	    	     System.out.println("You have " + seconds + " seconds to answer.");
+	    	     long startTime = System.currentTimeMillis();
+	    	     Timer timer = new Timer();
+	    	     timer.schedule(new TimerTask() {
+	    	         @Override
+	    	         public void run() {
+	    	             System.out.println("Time's up! Autosubmitting your answer.");
+	    	             timerExpired.set(true); // Set the timer expired flag
+	    	         }
+	    	     }, seconds * 1000); // Run the timer task after 'seconds' seconds
+
+	    	     while (!timerExpired.get()) {
+	    	         choice = scanner.nextInt(); // Wait for user input
+	    	         timer.cancel(); // Cancel the timer task if the user answers within the time limit
+	    	         break;
+	    	     }
+
+	    	     if (timerExpired.get()) {
+	    	         choice = 1; // Autosubmit the first available answer (you can change this to any default value)
+	    	     }
+	    	 } catch (InputMismatchException e) {
+	    	     System.out.println("Invalid input. Please try again!");
+	    	     scanner.next(); // Consume the invalid input
+	    	     getChoiceWithTimer(seconds); // Navigate back to getChoiceWithTimer
+	    	 }
+	    	 return choice;
+	    	}
+
+	     private static void logout() {
+	         System.out.println("Quiz completed! Thanks for playing.");
+	         // Add code to log out the user and return to the login screen
+	         // Login.main(new String[0]); // Navigate back to the login screen
+	     }
+	 }  
+ 
+ 
+UPDATEPROFILEANDPASSWORD.JAVA
+
+package com.online.system;
+
+import java.util.Scanner;
+
+public class UpdateProfileAndPassword {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter new username: ");
+        String newUsername = scanner.nextLine();
+
+        System.out.print("Enter new password: ");
+        String newPassword = scanner.nextLine();
+
+        // Update the username and password
+        Login.USERNAME = newUsername;
+        Login.PASSWORD = newPassword;
+
+        System.out.println("Profile and password updated successfully!");
+        MainSystem.main(args);
+    }
+}
+
+
+LOGOUT.JAVA
+
+package com.online.system;
+
+public class Logout {
+    public static void main(String[] args) {
+        System.out.println("Logging out...");
+        // Clear username and password
+        Login.USERNAME = "";
+        Login.PASSWORD = "";
+
+        System.out.println("Logout successful!");
+        System.out.println("Exiting system...");
+        System.exit(0);
+    }
+}
